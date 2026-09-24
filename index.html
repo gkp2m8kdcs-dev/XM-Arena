@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="XM Arena is a private investment journal for tracking every position across stocks, ETFs, crypto, bonds and cash. All data stays on your device." />
+<title>XM Arena — A Private Investment Journal</title>
+<style>
+  :root{
+    --bg:#0a0b0f;
+    --bg-elevated:#10121a;
+    --bg-card:#14171f;
+    --bg-chip:#1e2230;
+    --sep:rgba(255,255,255,.06);
+    --text:#ffffff;
+    --text-2:#a8b0bf;
+    --text-3:#707888;
+    --accent:#5878bc;
+    --accent-deep:#2d4d73;
+    --gain:#32cf79;
+    --loss:#f3606b;
+    --warning:#f5bf50;
+    --info:#5878bc;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  img{max-width:100%;display:block}
+  .container{max-width:1080px;margin:0 auto;padding:0 24px}
+
+  /* NAV */
+  .nav{position:sticky;top:0;z-index:50;background:rgba(10,11,15,.85);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--sep)}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.2px}
+  .brand-mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-deep));display:flex;align-items:center;justify-content:center;font-weight:800}
+  .nav-links{display:flex;gap:22px;align-items:center}
+  .nav-links a{color:var(--text-2);font-size:14px}
+  .nav-links a:hover{color:var(--text);text-decoration:none}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:999px;background:var(--accent);color:#fff;font-weight:600;font-size:14px;border:0;cursor:pointer;transition:transform .15s ease,background .2s ease}
+  .btn:hover{background:#6b8ac9;text-decoration:none;transform:translateY(-1px)}
+  .btn-ghost{background:transparent;border:1px solid var(--sep);color:var(--text)}
+
+  /* HERO */
+  .hero{padding:96px 0 64px;text-align:center;position:relative;overflow:hidden}
+  .hero::before{content:"";position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:900px;height:900px;background:radial-gradient(circle,rgba(88,120,188,.18),transparent 60%);pointer-events:none}
+  .eyebrow{display:inline-block;padding:6px 14px;border-radius:999px;background:rgba(88,120,188,.12);color:var(--accent);font-size:12px;font-weight:600;letter-spacing:.5px;margin-bottom:24px;border:1px solid rgba(88,120,188,.25)}
+  .hero h1{font-size:clamp(40px,6vw,68px);font-weight:800;line-height:1.05;letter-spacing:-1.5px;margin-bottom:20px}
+  .hero h1 span{background:linear-gradient(135deg,#7a98d6,#5878bc);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p.lead{font-size:clamp(17px,2vw,20px);color:var(--text-2);max-width:680px;margin:0 auto 36px}
+  .hero-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .badges{display:flex;justify-content:center;gap:18px;margin-top:36px;color:var(--text-3);font-size:13px;flex-wrap:wrap}
+  .badges span::before{content:"✓ ";color:var(--gain)}
+
+  /* PHONE MOCK */
+  .phone-stage{padding:40px 0 80px;display:flex;justify-content:center}
+  .phone{width:300px;height:620px;background:linear-gradient(160deg,#1a1d28,#0d0e15);border-radius:48px;border:8px solid #1a1d28;box-shadow:0 50px 100px rgba(0,0,0,.5),inset 0 0 0 2px rgba(255,255,255,.04);padding:14px;position:relative;overflow:hidden}
+  .phone::before{content:"";position:absolute;top:18px;left:50%;transform:translateX(-50%);width:120px;height:24px;background:#000;border-radius:20px;z-index:2}
+  .screen{width:100%;height:100%;background:var(--bg);border-radius:36px;padding:50px 16px 16px;overflow:hidden;position:relative}
+  .ph-row{display:flex;justify-content:space-between;align-items:center;color:var(--text-3);font-size:10px;margin-bottom:10px}
+  .ph-hero{background:linear-gradient(135deg,rgba(88,120,188,.25),rgba(88,120,188,.05));border:1px solid rgba(88,120,188,.3);border-radius:18px;padding:14px;margin-bottom:10px}
+  .ph-label{font-size:9px;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px}
+  .ph-amount{font-size:22px;font-weight:700;margin:4px 0 2px}
+  .ph-delta{font-size:11px;color:var(--gain)}
+  .ph-chart{height:60px;margin:10px 0 4px;background:linear-gradient(180deg,rgba(88,120,188,.3),transparent);border-radius:8px;position:relative;overflow:hidden}
+  .ph-chart::after{content:"";position:absolute;bottom:0;left:0;right:0;height:60%;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60'><path d='M0 45 Q 30 35 50 30 T 100 20 T 150 15 T 200 5' stroke='%235878bc' stroke-width='2' fill='none'/></svg>") center/100% 100% no-repeat}
+  .ph-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+  .ph-card{background:var(--bg-card);border:1px solid var(--sep);border-radius:12px;padding:10px;font-size:10px;color:var(--text-2)}
+  .ph-card b{display:block;color:var(--text);font-size:14px;margin-top:2px}
+
+  /* SECTIONS */
+  section{padding:80px 0;border-top:1px solid var(--sep)}
+  .section-title{text-align:center;font-size:clamp(28px,4vw,42px);font-weight:700;margin-bottom:14px;letter-spacing:-.5px}
+  .section-sub{text-align:center;color:var(--text-2);max-width:620px;margin:0 auto 56px;font-size:17px}
+
+  .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+  .card{background:var(--bg-card);border:1px solid var(--sep);border-radius:20px;padding:28px;transition:transform .2s ease,border-color .2s ease}
+  .card:hover{transform:translateY(-4px);border-color:rgba(88,120,188,.4)}
+  .card-icon{width:48px;height:48px;border-radius:12px;background:rgba(88,120,188,.15);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:16px}
+  .card h3{font-size:18px;font-weight:600;margin-bottom:8px}
+  .card p{color:var(--text-2);font-size:14.5px}
+
+  /* DETAIL ROWS */
+  .detail{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;margin-bottom:80px}
+  .detail.reverse{grid-template-columns:1fr 1fr;direction:rtl}
+  .detail.reverse > *{direction:ltr}
+  .detail h2{font-size:32px;font-weight:700;margin-bottom:16px;letter-spacing:-.5px}
+  .detail p{color:var(--text-2);font-size:16px;margin-bottom:14px}
+  .detail ul{list-style:none;color:var(--text-2)}
+  .detail li{padding:6px 0 6px 24px;position:relative;font-size:15px}
+  .detail li::before{content:"✓";position:absolute;left:0;color:var(--gain);font-weight:700}
+  .visual{background:linear-gradient(135deg,var(--bg-card),var(--bg-elevated));border:1px solid var(--sep);border-radius:24px;padding:24px;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;color:var(--text-3);position:relative;overflow:hidden}
+  .visual::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 30%,rgba(88,120,188,.12),transparent 60%)}
+  .bar-chart{display:flex;align-items:flex-end;gap:8px;height:120px;width:100%;padding:0 8px;position:relative;z-index:1}
+  .bar-chart .bar{flex:1;background:linear-gradient(180deg,var(--accent),var(--accent-deep));border-radius:6px 6px 0 0;opacity:.85}
+  .donut{width:140px;height:140px;border-radius:50%;background:conic-gradient(var(--accent) 0 35%,var(--gain) 35% 55%,var(--warning) 55% 75%,var(--info) 75% 100%);position:relative;z-index:1}
+  .donut::after{content:"";position:absolute;inset:24px;background:var(--bg-card);border-radius:50%}
+  .line-mock{width:100%;height:140px;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 140'><path d='M0 110 Q 60 70 120 80 T 240 50 T 360 30 L 400 20' stroke='%235878bc' stroke-width='3' fill='none'/><path d='M0 110 Q 60 70 120 80 T 240 50 T 360 30 L 400 20 L 400 140 L 0 140 Z' fill='%235878bc' fill-opacity='.15'/></svg>") center/100% 100% no-repeat;position:relative;z-index:1}
+
+  /* CTA */
+  .cta{text-align:center;background:linear-gradient(135deg,rgba(88,120,188,.18),rgba(88,120,188,.04));border:1px solid rgba(88,120,188,.3);border-radius:28px;padding:64px 32px;margin:80px 0}
+  .cta h2{font-size:36px;font-weight:700;margin-bottom:14px;letter-spacing:-.5px}
+  .cta p{color:var(--text-2);max-width:520px;margin:0 auto 28px;font-size:17px}
+
+  /* FOOTER */
+  footer{border-top:1px solid var(--sep);padding:48px 0;color:var(--text-3);font-size:14px}
+  .foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;align-items:center}
+  .foot-links{display:flex;gap:22px;flex-wrap:wrap}
+  .foot-links a{color:var(--text-3)}
+  .foot-links a:hover{color:var(--text);text-decoration:none}
+
+  @media(max-width:760px){
+    .detail{grid-template-columns:1fr;gap:24px;margin-bottom:56px}
+    .detail.reverse{direction:ltr}
+    .nav-links a:not(.btn){display:none}
+    .hero{padding:64px 0 40px}
+    .phone{width:240px;height:500px}
+    section{padding:56px 0}
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <div class="brand">
+      <div class="brand-mark">X</div>
+      <span>XM Arena</span>
+    </div>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#dashboard">Dashboard</a>
+      <a href="#insights">Insights</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a href="support.html" class="btn">Support</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container">
+    <span class="eyebrow">iOS · Version 1.0 · Free Forever</span>
+    <h1>Your portfolio, <span>finally private.</span></h1>
+    <p class="lead">XM Arena is a personal investment journal that lives entirely on your device. Track every stock, ETF, crypto, bond and cash position in one calm, ad-free interface — no account, no cloud, no tracking.</p>
+    <div class="hero-actions">
+      <a href="https://apps.apple.com" class="btn">Download on the App Store</a>
+      <a href="#features" class="btn btn-ghost">Explore Features</a>
+    </div>
+    <div class="badges">
+      <span>No account required</span>
+      <span>Works offline</span>
+      <span>No ads · No tracking</span>
+    </div>
+  </div>
+</header>
+
+<div class="phone-stage">
+  <div class="phone">
+    <div class="screen">
+      <div class="ph-row"><span>9:41</span><span>●●●●● 5G</span></div>
+      <div class="ph-hero">
+        <div class="ph-label">Net Worth</div>
+        <div class="ph-amount">$248,392.18</div>
+        <div class="ph-delta">▲ $3,127.40 (+1.27%) today</div>
+        <div class="ph-chart"></div>
+      </div>
+      <div class="ph-grid">
+        <div class="ph-card">Lifetime return<b style="color:var(--gain)">+34.8%</b></div>
+        <div class="ph-card">Holdings<b>27</b></div>
+        <div class="ph-card">Dividends YTD<b>$4,210</b></div>
+        <div class="ph-card">Cash flow<b style="color:var(--gain)">+$12.4k</b></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section id="features">
+  <div class="container">
+    <h2 class="section-title">Everything you need. Nothing you don't.</h2>
+    <p class="section-sub">XM Arena combines a deep portfolio dashboard with hands-on journaling and analytical tools — built natively in SwiftUI for iOS 16 and later.</p>
+    <div class="features">
+      <div class="card"><div class="card-icon">📊</div><h3>Deep Dashboard</h3><p>Hero card with net worth, lifetime return, day change and a precision cursor on the trend chart. Zoom through 1W to all-time.</p></div>
+      <div class="card"><div class="card-icon">🥧</div><h3>Allocation Insight</h3><p>Donut chart breaks down your exposure by asset class and region. Risk meters surface concentration and drawdown.</p></div>
+      <div class="card"><div class="card-icon">📓</div><h3>Activity Journal</h3><p>Eight transaction types with venue, notes, tags and receipt photos attached from camera or photo library.</p></div>
+      <div class="card"><div class="card-icon">📈</div><h3>Interactive Charts</h3><p>Tap the trend curve to surface a draggable precision cursor with date and value at any point.</p></div>
+      <div class="card"><div class="card-icon">🎯</div><h3>Goal Tracker</h3><p>Set retirement, down payment and emergency fund targets with custom icons, colors and deadlines.</p></div>
+      <div class="card"><div class="card-icon">⭐</div><h3>Watchlist</h3><p>Track candidate positions against target prices with upside and downside percentages.</p></div>
+      <div class="card"><div class="card-icon">📤</div><h3>CSV Export</h3><p>Export transactions, holdings and dividends as CSV files you can share, back up or open in spreadsheets.</p></div>
+      <div class="card"><div class="card-icon">🔒</div><h3>Private by Design</h3><p>All data lives in your iOS sandbox. No analytics SDK, no remote server, no third party. Delete the app — data is gone.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="dashboard">
+  <div class="container">
+    <div class="detail">
+      <div>
+        <h2>The dashboard is the home of your portfolio.</h2>
+        <p>Glance at your net worth, lifetime return and day change in a single hero card. A smooth range selector lets you zoom through one week, one month, three months, six months, one year or all time — instantly.</p>
+        <ul>
+          <li>Tap any point on the chart to surface a precision cursor with date and value</li>
+          <li>Allocation donut breaks down exposure by asset class and region</li>
+          <li>Two risk meters surface concentration and maximum drawdown</li>
+        </ul>
+      </div>
+      <div class="visual"><div class="line-mock" aria-label="Portfolio trend chart"></div></div>
+    </div>
+
+    <div class="detail reverse">
+      <div>
+        <h2>Holdings with full context.</h2>
+        <p>Every position has its own interactive thirty-day price trend, performance grid, annualized return, dividend total and a six-month cost-versus-return bar chart. Search, filter and sort to find what you need in seconds.</p>
+        <ul>
+          <li>Filter by asset type — stock, ETF, crypto, bond, cash</li>
+          <li>Sort by value, weight, cost or return</li>
+          <li>Tags and notes for personal context on every position</li>
+        </ul>
+      </div>
+      <div class="visual"><div class="bar-chart" aria-label="Holdings bar chart"><div class="bar" style="height:30%"></div><div class="bar" style="height:55%"></div><div class="bar" style="height:80%"></div><div class="bar" style="height:45%"></div><div class="bar" style="height:90%"></div><div class="bar" style="height:60%"></div><div class="bar" style="height:75%"></div></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="insights">
+  <div class="container">
+    <div class="detail">
+      <div>
+        <h2>Four analytical views.</h2>
+        <p>The insights section delivers Performance, Allocation, Cash Flow and Compare modes — plus a yield heatmap that surfaces where your income is coming from.</p>
+        <ul>
+          <li>180-day portfolio trend with Sharpe ratio and max drawdown</li>
+          <li>Monthly inflows and outflows alongside invested and returned capital</li>
+          <li>Top five holdings ranked by value and return</li>
+        </ul>
+      </div>
+      <div class="visual"><div class="donut" aria-label="Allocation donut chart"></div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2 class="section-title">Designed like a private notebook.</h2>
+    <p class="section-sub">Every interaction is built with SwiftUI and runs natively on iOS 16 and later. The draggable chart cursor, the tap-to-dismiss keyboards, the bouncing transaction rows — each detail is engineered for calm.</p>
+    <div class="features">
+      <div class="card"><div class="card-icon">⚙️</div><h3>Currency & Format</h3><p>Switch display currency, toggle haptic feedback, choose between standard and compact number formats.</p></div>
+      <div class="card"><div class="card-icon">📅</div><h3>Date Preferences</h3><p>Toggle between absolute and relative dates to see transactions the way you think about them.</p></div>
+      <div class="card"><div class="card-icon">💸</div><h3>Receipts</h3><p>Attach receipt photos directly from camera or photo library to any transaction.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="cta">
+      <h2>Start your private journal.</h2>
+      <p>Free forever. No subscription, no premium tier, no advertisement. Your portfolio is yours.</p>
+      <a href="https://apps.apple.com" class="btn">Download XM Arena</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container foot">
+    <div>© 2026 XM Arena. Built with care.</div>
+    <div class="foot-links">
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms of Use</a>
+      <a href="support.html">Support</a>
+      <a href="mailto:a45984849@gmail.com">a45984849@gmail.com</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
